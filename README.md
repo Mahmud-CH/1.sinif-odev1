@@ -1,0 +1,1 @@
+# 1.sinif-odev1
