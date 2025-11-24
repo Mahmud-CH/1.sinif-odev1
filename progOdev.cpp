@@ -33,12 +33,17 @@ void ogrenciBilgi(struct ogrenci sinif[], int ders);
 void standartSap(struct ogrenci sinif[], int ders);
 // Sınıfın ortalama notları yazdıriyor
 void sinifNotCout(int sinif);
+// sinif notların ortalaması buliyor
+void sinifNotOrt(struct ogrenci sinif[], int ders);
+
 // string int'e çeviriyor
 int stringToInt(string stringOgr);
+
 // öğrencinin yil içi notu hesapliyor
 double yilIciHesap(int odev1, int odev2, int proje, int vize);
 // öğrencinin genel notunu hesapliyor
 double genelNotHesaplama(int final, double yilIci);
+
 // öğrenci telefon numarası hazırliyor
 string ogrenciTel(string ogrenci);
 // öğrenci basarı notu sözel ve sayısalı 
@@ -273,30 +278,28 @@ void standartSap(struct ogrenci sinif[], int ders)
   doubleStanSap = sqrt(toplamGenel / 100);
   stanSap << fixed << setprecision(2) << doubleStanSap;
 
-
+  sinifNot *ogrSinif;
   switch(ders)
   {
     case 1:
-      progNotlar.ortalama = ortalama;
-      progNotlar.stanSap = stanSap.str();
+      ogrSinif = &progNotlar;
       break;
     case 2:
-      matNotlar.ortalama = ortalama;
-      matNotlar.stanSap = stanSap.str();
+      ogrSinif = &matNotlar;
       break;
     case 3:
-      fizNotlar.ortalama = ortalama;
-      fizNotlar.stanSap = stanSap.str();
+      ogrSinif = &fizNotlar;
       break;
     case 4:
-      bilgNotlar.ortalama = ortalama;
-      bilgNotlar.stanSap = stanSap.str();
+      ogrSinif = &bilgNotlar;
       break;
     case 5:
-      ingNotlar.ortalama = ortalama;
-      ingNotlar.stanSap = stanSap.str();
+      ogrSinif = &ingNotlar;
       break;
   }
+  
+  ogrSinif->ortalama = ortalama;
+  ogrSinif->stanSap = stanSap.str();
   return;
 }
 
@@ -437,6 +440,38 @@ void ogrenciBilgi(struct ogrenci sinif[], int ders)
     ogr.yilIci = "Yil Ici: %" + to_string(yilIci);
   }
   
+  sinifNotOrt(sinif, ders);
+
+  //standart sapmayi buliyor
+  standartSap(sinif, ders);
+
+  return;
+}
+
+void sinifNotOrt(struct ogrenci sinif[], int ders)
+{
+  sinifNot *ogrSinif;
+
+  // sinifNotCout() gibi yapmaya denedim olmadı
+  switch(ders)
+  {
+    case 1:
+      ogrSinif = &progNotlar;
+      break;
+    case 2:
+      ogrSinif = &matNotlar;
+      break;
+    case 3:
+      ogrSinif = &fizNotlar;
+      break;
+    case 4:
+      ogrSinif = &bilgNotlar;
+      break;
+    case 5:
+      ogrSinif = &ingNotlar;
+      break;
+  }
+
 
   // farkli sekilde yapamadim
   int aa = 0;
@@ -460,27 +495,27 @@ void ogrenciBilgi(struct ogrenci sinif[], int ders)
     {
       aa++;
 
-    }else if(basNotSayi < 4 && basNotSayi >= 3.5)
+    }else if(basNotSayi >= 3.5)
     {
       ba++;
 
-    }else if(basNotSayi < 3.5 && basNotSayi >= 3)
+    }else if(basNotSayi >= 3)
     {
       bb++;
 
-    }else if(basNotSayi < 3 && basNotSayi >= 2.5)
+    }else if(basNotSayi >= 2.5)
     {
       cb++;
 
-    }else if(basNotSayi < 2.5 && basNotSayi >= 2)
+    }else if(basNotSayi >= 2)
     {
       cc++;
 
-    }else if(basNotSayi < 2 && basNotSayi >= 1.5)
+    }else if(basNotSayi >= 1.5)
     {
       dc++;
 
-    }else if(basNotSayi < 1.5 && basNotSayi >= 1)
+    }else if(basNotSayi >= 1)
     {
       dd++;
 
@@ -490,67 +525,16 @@ void ogrenciBilgi(struct ogrenci sinif[], int ders)
     }
   }
 
-  // sinifNotCout() gibi yapmaya denedim olmadı
-  switch(ders)
-  {
-    case 1:
-      progNotlar.aa = "AA alan: %" + to_string(aa);
-      progNotlar.ba = "BA alan: %" + to_string(ba);
-      progNotlar.bb = "BB alan: %" + to_string(bb);
-      progNotlar.cb = "CB alan: %" + to_string(cb);
-      progNotlar.cc = "CC alan: %" + to_string(cc);
-      progNotlar.dc = "DC alan: %" + to_string(dc);
-      progNotlar.dd = "DD alan: %" + to_string(dd);
-      progNotlar.ff = "FF alan: %" + to_string(ff);
-      break;
-    case 2:
-      matNotlar.aa = "AA alan: %" + to_string(aa);
-      matNotlar.ba = "BA alan: %" + to_string(ba);
-      matNotlar.bb = "BB alan: %" + to_string(bb);
-      matNotlar.cb = "CB alan: %" + to_string(cb);
-      matNotlar.cc = "CC alan: %" + to_string(cc);
-      matNotlar.dc = "DC alan: %" + to_string(dc);
-      matNotlar.dd = "DD alan: %" + to_string(dd);
-      matNotlar.ff = "FF alan: %" + to_string(ff);
-      break;
-    case 3:
-      fizNotlar.aa = "AA alan: %" + to_string(aa);
-      fizNotlar.ba = "BA alan: %" + to_string(ba);
-      fizNotlar.bb = "BB alan: %" + to_string(bb);
-      fizNotlar.cb = "CB alan: %" + to_string(cb);
-      fizNotlar.cc = "CC alan: %" + to_string(cc);
-      fizNotlar.dc = "DC alan: %" + to_string(dc);
-      fizNotlar.dd = "DD alan: %" + to_string(dd);
-      fizNotlar.ff = "FF alan: %" + to_string(ff);
-      break;
-    case 4:
-      bilgNotlar.aa = "AA alan: %" + to_string(aa);
-      bilgNotlar.ba = "BA alan: %" + to_string(ba);
-      bilgNotlar.bb = "BB alan: %" + to_string(bb);
-      bilgNotlar.cb = "CB alan: %" + to_string(cb);
-      bilgNotlar.cc = "CC alan: %" + to_string(cc);
-      bilgNotlar.dc = "DC alan: %" + to_string(dc);
-      bilgNotlar.dd = "DD alan: %" + to_string(dd);
-      bilgNotlar.ff = "FF alan: %" + to_string(ff);
-      break;
-    case 5:
-      ingNotlar.aa = "AA alan: %" + to_string(aa);
-      ingNotlar.ba = "BA alan: %" + to_string(ba);
-      ingNotlar.bb = "BB alan: %" + to_string(bb);
-      ingNotlar.cb = "CB alan: %" + to_string(cb);
-      ingNotlar.cc = "CC alan: %" + to_string(cc);
-      ingNotlar.dc = "DC alan: %" + to_string(dc);
-      ingNotlar.dd = "DD alan: %" + to_string(dd);
-      ingNotlar.ff = "FF alan: %" + to_string(ff);
-      break;
-  }
-
-  //standart sapmayi buliyor
-  standartSap(sinif, ders);
-
-  return;
+  ogrSinif->aa = "AA alan: %" + to_string(aa);
+  ogrSinif->ba = "BA alan: %" + to_string(ba);
+  ogrSinif->bb = "BB alan: %" + to_string(bb);
+  ogrSinif->cb = "CB alan: %" + to_string(cb);
+  ogrSinif->cc = "CC alan: %" + to_string(cc);
+  ogrSinif->dc = "DC alan: %" + to_string(dc);
+  ogrSinif->dd = "DD alan: %" + to_string(dd);
+  ogrSinif->ff = "FF alan: %" + to_string(ff);
+ 
 }
-
 
 string basariNotu(double genelNot)
 {
@@ -573,32 +557,32 @@ string basariNotu(double genelNot)
     // diger else if leri bakmasin diye return basNot koydum
     return basNot;
 
-  }else if(basNotSayi < 4 && basNotSayi >= 3.5)
+  }else if(basNotSayi >= 3.5)
   {
     basNot += basNotStream.str() + " BA";
     return basNot;
 
-  }else if(basNotSayi < 3.5 && basNotSayi >= 3)
+  }else if(basNotSayi >= 3)
   {
     basNot += basNotStream.str() + " BB";
     return basNot;
 
-  }else if(basNotSayi < 3 && basNotSayi >= 2.5)
+  }else if(basNotSayi >= 2.5)
   {
     basNot += basNotStream.str()  + " CB";
     return basNot;
 
-  }else if(basNotSayi < 2.5 && basNotSayi >= 2)
+  }else if(basNotSayi >= 2)
   {
     basNot += basNotStream.str() + " CC";
     return basNot;
 
-  }else if(basNotSayi < 2 && basNotSayi >= 1.5)
+  }else if(basNotSayi >= 1.5)
   {
     basNot += basNotStream.str() + " DC";
     return basNot;
 
-  }else if(basNotSayi < 1.5 && basNotSayi >= 1)
+  }else if(basNotSayi >= 1)
   {
     basNot += basNotStream.str() + " DD";
     return basNot;
@@ -657,7 +641,7 @@ string isimSoySeh(int sira, int randNum)
 
 string ogrenciTel(string ogr)
 {
-  ogr += "+90 5";
+  ogr = "+90 5";
 
   for(int j = 1; j < 3; j++) 
   {
@@ -690,21 +674,17 @@ double yilIciHesap(int odev1, int odev2, int proje, int vize)
   double yilIci = (odev1 * 5 + odev2 * 5 + proje * 10 + vize * 30) / 50;
 
   if (yilIci > 100)
-  { 
-    yilIci = 100;
-  }
+  yilIci = 100;
 
   return yilIci;
 }
 
 double genelNotHesaplama(int final, double yilIci)
 {
-  int basNot = (yilIci * 0.5) +(final * 0.5); // prog giris icin boyle
+  int basNot = (yilIci * 0.5) + (final * 0.5); // prog giris icin boyle
 
   if (basNot > 100)
-  {
-    basNot = 100;
-  }
+  basNot = 100;
 
   return basNot;
 }
